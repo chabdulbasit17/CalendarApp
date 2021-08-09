@@ -4,13 +4,13 @@ require("date")
 
 module Validations
  
-  def Validations.InputDate
+  def Validations.input_date
     date = gets
     retdate = Date.parse(date) rescue nil
     return retdate
   end
 
-  def Validations.InputTime
+  def Validations.input_time
     time = gets
     rettime = Validations.get_time(time)
     return Time.parse(rettime) unless rettime.nil?
@@ -23,7 +23,7 @@ module Validations
     b ? b.join : b
   end
 
-  def Validations.InputInteger
+  def Validations.input_integer
     num = gets.chomp.to_i rescue nil
   end
 

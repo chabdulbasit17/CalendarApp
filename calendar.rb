@@ -8,7 +8,7 @@ class Calendar
     @events = Hash.new { |h, k| h[k] = [] }
   end 
 
-  def AddEvent(date, time, venue, title)
+  def add_event(date, time, venue, title)
     if date.nil?
       puts "Error in date. Exiting back to main menu..."
       return 
@@ -28,7 +28,7 @@ class Calendar
     return "success"
   end 
 
-  def ShowMonthView(month=0)
+  def month_view(month=0)
     month == 0? curr=Time.new.month : curr = month
     puts "Events for the month #{Date::MONTHNAMES[curr]}"
     if @events[curr].empty?

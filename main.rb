@@ -7,45 +7,42 @@ class Driver
   end
   def run
     puts "Welcome ! Today is #{Time.new.day}/#{Time.new.month}/#{Time.new.year} "
-    self.MainMenu
+    self.show_main_menu
     flag = 0
     while flag != 8
-      flag = Validations.InputInteger
+      flag = Validations.input_integer
       if(!flag.between?(1,8))
         puts "Invalid Choice ! "
       elsif flag == 1
-        self.MonthView
+        self.month_view
       elsif flag == 2
-        self.AddEvent
+        self.add_event
       end
 
 
     end
-
-
-
   end
 
-  def AddEvent
+  def add_event
     puts "Please enter the title: "
     title = gets
     puts "Please enter the venue: "
     venue = gets 
     puts "Please enter the date(dd/mm/yyyy): "
-    date = Validations.InputDate
+    date = Validations.input_date
     puts "Please enter the time(HH:MM): "
-    time = Validations.InputTime
-    @calendar.AddEvent(date, time, title, venue)
+    time = Validations.input_time
+    @calendar.add_event(date, time, title, venue)
   end
 
-  def MonthView
+  def month_view
 
-    @calendar.ShowMonthView
+    @calendar.month_view
 
   end
 
 
-  def MainMenu
+  def show_main_menu
     puts "1-- View the whole month\n"
     puts "2-- Add Event\n"
     puts "3-- Remove Event\n"
@@ -55,8 +52,6 @@ class Driver
     puts "7-- Load From A File\n"
     puts "8-- Exit App\n"
   end
-
-
 end 
 
 
