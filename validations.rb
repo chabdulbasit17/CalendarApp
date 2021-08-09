@@ -23,5 +23,9 @@ module Validations
     b ? b.join : b
   end
 
+  def Validations.InputInteger
+    num = gets.chomp.to_i rescue nil
+  end
+
 end
 

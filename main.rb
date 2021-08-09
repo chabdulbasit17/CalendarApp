@@ -8,6 +8,20 @@ class Driver
   def run
     puts "Welcome ! Today is #{Time.new.day}/#{Time.new.month}/#{Time.new.year} "
     self.MainMenu
+    flag = 0
+    while flag != 8
+      flag = Validations.InputInteger
+      if(!flag.between?(1,8))
+        puts "Invalid Choice ! "
+      elsif flag == 1
+        self.MonthView
+      elsif flag == 2
+        self.AddEvent
+      end
+
+
+    end
+
 
 
   end
@@ -24,6 +38,13 @@ class Driver
     @calendar.AddEvent(date, time, title, venue)
   end
 
+  def MonthView
+
+    @calendar.ShowMonthView
+
+  end
+
+
   def MainMenu
     puts "1-- View the whole month\n"
     puts "2-- Add Event\n"
@@ -32,6 +53,7 @@ class Driver
     puts "5-- Show events of a specific month\n"
     puts "6-- Show events of a specific day\n"
     puts "7-- Load From A File\n"
+    puts "8-- Exit App\n"
   end
 
 
