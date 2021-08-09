@@ -27,7 +27,7 @@ class Calendar
     @events[date.month].push(event_to_add)
 
     p @events
-    return "Event added successfully."
+    return "success"
 
 
   end 
