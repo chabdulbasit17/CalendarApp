@@ -1,8 +1,16 @@
 require_relative("event")
 require("time")
 require("date")
+require 'io/console'                                                                                                       
 
 module Validations
+
+
+  def Validations.press_enter                                                                                                               
+    print "press enter to continue..."                                                                                                    
+    STDIN.getch                                                                                                              
+    print "            \r" # extra space to overwrite in case next sentence is short                                                                                                              
+  end  
  
   def Validations.input_date
     date = gets

@@ -25,21 +25,29 @@ class Calendar
     event_to_add = Event.new(date, time, title, venue)
     @events[date.month].push(event_to_add)
     
-    return "success"
+    return true
   end 
 
   def month_view(month=0)
     month == 0? curr=Time.new.month : curr = month
+
     puts "Events for the month #{Date::MONTHNAMES[curr]}"
     if @events[curr].empty?
       puts "No events for this month."
-      return
+      return 0
     end
-    @events[curr].each {|v| puts v.date.strftime("%A, %d %B, %Y"), v.time.strftime("%H:%M"), v.venue, v.title}
+    @events[curr].each_with_index {|v,i| puts "-------------------------------\nEvent #{i+1}\n---#{v.title}\n---#{v.venue}\n---#{v.date.strftime("%A, %d %B, %Y")}\n---#{v.time.strftime("%H:%M")}"  }
     
   end
 
-
+  def delete_event(month, index)
+    p @events[month].size
+    if index > @events[month].size || index < 1
+      return nil
+    end
+    @events[month].delete_at(index-1) rescue nill
+    return true
+  end
 
 
 
