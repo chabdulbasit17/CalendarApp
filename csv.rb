@@ -6,5 +6,7 @@ require 'csv'
 class Csv
   def load_data(filename)
     CSV.read(filename)
+  rescue StandardError
+    nil
   end
 end

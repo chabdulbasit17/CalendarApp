@@ -12,12 +12,12 @@ class Calendar
     @events = Hash.new { |h, k| h[k] = [] }
   end
 
-  def add_event(date, time, venue, title)
+  def add_event(date, time, venue, title, past_flag = true)
     puts 'Error in date' && return if date.nil?
 
     puts 'Error in time' && return if time.nil?
 
-    if date.year < Time.new.year
+    if date.year < Time.new.year && past_flag
       puts 'Cannot add event in the past'
       return
     end
@@ -46,22 +46,12 @@ class Calendar
     View.show_events(arr)
   end
 
-  def grid_view
-    puts "Please enter the month's full name: (i.e) August"
-    mth = gets.chomp.capitalize
-    month = Date::MONTHNAMES.index(mth)
-    return nil if month.nil?
-
-    puts 'Enter year: '
-    year = validate_integer gets.chomp
-    return nil if year.zero?
-
-    date = Date.parse("01/#{month}/#{year}")
+  def grid_view(entered_date)
+    date = Date.parse("01/#{entered_date.month}/#{entered_date.year}")
     puts 'Invalid date' && return if date.nil?
     start_weekday = date.cwday
     event_entries = Hash.new(false)
     @events[date.month].each { |v| event_entries[v.date.day] = true if v.date.year == date.year }
-    p event_entries
     View.grid_view(start_weekday, event_entries)
   end
 

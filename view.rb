@@ -8,10 +8,10 @@ class View
     events.each_with_index do |v, i|
       puts '-' * 10
       puts "Event Number #{i + 1}"
-      puts "---#{v.title}"
-      puts "---#{v.venue}"
-      puts "---#{v.date.strftime('%A, %d %B, %Y')}"
-      puts "---#{v.time.strftime('%H:%M')}"
+      puts "Title:---#{v.title}"
+      puts "Venue:---#{v.venue}"
+      puts "Date:---#{v.date.strftime('%A, %d %B, %Y')}"
+      puts "Time:---#{v.time.strftime('%H:%M')}"
     end
   end
 

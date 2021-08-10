@@ -14,6 +14,8 @@ module Validations
   end
 
   def validate_date(date)
+    return nil if (date =~ %r(^\d{2}/\d{2}/\d{4})).nil? && (date =~ %r(^\d{2}/\d{4})).nil?
+
     Date.parse(date)
   rescue StandardError
     nil

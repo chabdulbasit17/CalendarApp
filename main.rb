@@ -49,26 +49,14 @@ class Driver
   end
 
   def month_view
-    puts "Please enter the month's full name: (i.e) August"
-    mth = gets.chomp.capitalize
-    month = Date::MONTHNAMES.index(mth)
-    if month.nil?
-      puts 'Invalid month name.'
-      return
-    end
-    puts 'Please enter the year: '
-    year = validate_integer gets.chomp
-    if year.zero?
-      puts 'Invalid year'
-      return
-    end
-    @calendar.month_view(month, year)
+    puts 'Please enter date (MM/YYYY)'
+    date = input_date
+    @calendar.month_view(date.month, date.year)
   end
 
   def day_view
-    puts 'Please enter date'
-    date = validate_date gets.chomp
-    puts 'Invalid date' && return if date.nil?
+    puts 'Please enter date (DD/MM/YYYY)'
+    date = input_date
     @calendar.day_view(date)
   end
 
@@ -97,7 +85,9 @@ class Driver
   end
 
   def grid_view
-    @calendar.grid_view
+    puts 'Please enter the date (MM/YYYY): '
+    date = input_date
+    @calendar.grid_view(date)
   end
 
   def show_main_menu
@@ -113,9 +103,14 @@ class Driver
   end
 
   def load_from_csv
-    data = Csv.new.load_data('text.csv')
+    puts 'Please enter filename: (filename.csv) '
+    filename = input_string
+    data = Csv.new.load_data(filename)
     # date, time, title, venue
-    p data
+    if data.nil?
+      puts 'The file mentioned doesnt exist'
+      return
+    end
     data.each do |eve|
       date, time, title, venue = eve
       date = validate_date(date.chomp)
@@ -123,6 +118,7 @@ class Driver
       puts 'Error in data' && break if date.nil? || time.nil?
       @calendar.add_event(date, time, title, venue)
     end
+    puts 'Data has been loaded into the calendar from the file'
   end
 
   # Helpers
@@ -130,36 +126,52 @@ class Driver
   private
 
   def select_event
-    puts "Please enter the month's full name: (i.e) August"
-    mth = gets.chomp.capitalize
-    month = Date::MONTHNAMES.index(mth)
-    if month.nil?
-      puts 'Invalid month name.'
-      return
-    end
-    puts 'Please enter the year: '
-    year = validate_integer gets.chomp
-    if year.zero?
-      puts 'Invalid year'
-      return
-    end
-    return if @calendar.month_view(month, year).nil?
+    print 'Please enter date: (MM/YYYY)'
+    date = input_date
+    return if @calendar.month_view(date.month, date.year).nil?
 
     puts 'Please enter the index of event you want to remove'
     ind = validate_integer gets.chomp
-    [month, ind]
+    [date.month, ind]
   end
 
   def input_event
     puts 'Please enter the title: '
-    title = gets.chomp
+    title = input_string
     puts 'Please enter the venue: '
-    venue = gets.chomp
+    venue = input_string
     puts 'Please enter the date(dd/mm/yyyy): '
-    date = validate_date gets.chomp
+    date = input_date
     puts 'Please enter the time(HH:MM): '
-    time = validate_time gets.chomp
+    time = input_time
     [title, venue, date, time]
+  end
+
+  def input_date
+    date = nil
+    while date.nil?
+      date = validate_date gets.chomp
+      puts 'Invalid Date. Please Try Again: ' if date.nil?
+    end
+    date
+  end
+
+  def input_time
+    time = nil
+    while time.nil?
+      time = validate_time gets.chomp
+      puts 'Invalid Time. Please Try Again: ' if time.nil?
+    end
+    time
+  end
+
+  def input_string
+    str = ''
+    while str.empty?
+      str = gets.chomp
+      puts 'Please enter a valid value: ' if str.empty?
+    end
+    str
   end
 end
 
