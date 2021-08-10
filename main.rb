@@ -11,21 +11,22 @@ class Driver
   def run
     flag = 0
     while flag != 8
-      self.show_main_menu
+      show_main_menu
       flag = Validations.input_integer
-      if(!flag.between?(1,8))
-        puts "Invalid Choice ! "
+      if !flag.between?(1, 8)
+        puts 'Invalid Choice !'
       elsif flag == 1
+        grid_view
       elsif flag == 2
-        self.add_event
+        add_event
       elsif flag == 3
-        self.delete_event
+        delete_event
       elsif flag == 4
-        self.update_event
+        update_event
       elsif flag == 5
-        self.month_view
+        month_view
       elsif flag == 6
-        self.day_view
+        day_view
 
       end
     Validations.press_enter
@@ -86,9 +87,10 @@ class Driver
       return
     end
     @calendar.update_event(month, ind, title, venue, date, time )
+  end
 
-
-
+  def grid_view
+    @calendar.grid_view
   end
 
   def show_main_menu
