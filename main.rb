@@ -81,7 +81,10 @@ class Driver
       puts 'Event not changed'
       return
     end
-    @calendar.update_event(month, ind, title, venue, date, time)
+    if @calendar.update_event(month, ind, title, venue, date, time)
+      puts 'Event successfully updated'
+    else
+      puts 'Error: Please enter correct index'
   end
 
   def grid_view
