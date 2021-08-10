@@ -10,6 +10,7 @@ module Validations
     print 'press enter to continue...'
     $stdin.getch
     print "            \r" # extra space to overwrite in case next sentence is short
+    puts
   end
 
   def self.input_date
@@ -42,10 +43,8 @@ module Validations
   end
 
   def self.input_integer
-    num = begin
-      gets.chomp.to_i
-    rescue StandardError
-      nil
-    end
+    gets.chomp.to_i
+  rescue StandardError
+    nil
   end
 end

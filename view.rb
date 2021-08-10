@@ -5,12 +5,16 @@ require('colorize')
 class View
   def self.show_events(events)
     events.each_with_index do |v, i|
-      puts "-------------------------------\nEvent #{i + 1}\n---#{v.title}\n---#{v.venue}\n---#{v.date.strftime('%A, %d %B, %Y')}\n---#{v.time.strftime('%H:%M')}"
+      puts '-' * 10
+      puts "Event Number #{i + 1}"
+      puts "---#{v.title}"
+      puts "---#{v.venue}"
+      puts "---#{v.date.strftime('%A, %d %B, %Y')}"
+      puts "---#{v.time.strftime('%H:%M')}"
     end
   end
 
   def self.grid_view(start_of_month_weekday, event_entries)
-    p event_entries[26]
     days = %w[M T W T F S S]
     days.each { |d| print format('%-8.3s', "#{d} ") }
     puts
@@ -31,5 +35,6 @@ class View
       end
       i += 1
     end
+    puts
   end
 end
