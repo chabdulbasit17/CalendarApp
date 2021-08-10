@@ -2,6 +2,7 @@
 
 require('date')
 require('colorize')
+# Class View for outputting on the console
 class View
   def self.show_events(events)
     events.each_with_index do |v, i|

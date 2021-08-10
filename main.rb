@@ -15,7 +15,7 @@ class Driver
     flag = 0
     while flag != 8
       show_main_menu
-      flag = input_integer
+      flag = validate_integer gets.chomp
       if !flag.between?(1, 8)
         puts 'Invalid Choice !'
       elsif flag == 1
@@ -55,7 +55,7 @@ class Driver
       return
     end
     puts 'Please enter the year: '
-    year = input_integer
+    year = validate_integer gets.chomp
     if year.zero?
       puts 'Invalid year'
       return
@@ -65,7 +65,7 @@ class Driver
 
   def day_view
     puts 'Please enter date'
-    date = input_date
+    date = validate_date gets.chomp
     puts 'Invalid date' && return if date.nil?
     @calendar.day_view(date)
   end
@@ -123,15 +123,15 @@ class Driver
       return
     end
     puts 'Please enter the year: '
-    year = input_integer
+    year = validate_integer gets.chomp
     if year.zero?
       puts 'Invalid year'
       return
     end
-    return if @calendar.month_view(month, year).zero?
+    return if @calendar.month_view(month, year).nil?
 
     puts 'Please enter the index of event you want to remove'
-    ind = input_integer
+    ind = validate_integer gets.chomp
     [month, ind]
   end
 
@@ -141,9 +141,9 @@ class Driver
     puts 'Please enter the venue: '
     venue = gets.chomp
     puts 'Please enter the date(dd/mm/yyyy): '
-    date = input_date
+    date = validate_date gets.chomp
     puts 'Please enter the time(HH:MM): '
-    time = input_time
+    time = validate_time gets.chomp
     [title, venue, date, time]
   end
 end

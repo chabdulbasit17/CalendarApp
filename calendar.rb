@@ -31,7 +31,7 @@ class Calendar
 
     if @events[month].empty?
       puts 'No events for this month.'
-      return 0
+      return nil
     end
     puts "Events for the month #{Date::MONTHNAMES[month]}"
 
@@ -53,7 +53,7 @@ class Calendar
     return nil if month.nil?
 
     puts 'Enter year: '
-    year = input_integer
+    year = validate_integer gets.chomp
     return nil if year.zero?
 
     date = Date.parse("01/#{month}/#{year}")
