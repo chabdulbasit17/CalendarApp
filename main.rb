@@ -2,6 +2,7 @@
 
 require_relative('calendar')
 require_relative('validations')
+require_relative('csv')
 require('date')
 require_relative('event')
 
@@ -112,7 +113,16 @@ class Driver
   end
 
   def load_from_csv
-    
+    data = Csv.new.load_data('text.csv')
+    # date, time, title, venue
+    p data
+    data.each do |eve|
+      date, time, title, venue = eve
+      date = validate_date(date.chomp)
+      time = validate_time(time.chomp)
+      puts 'Error in data' && break if date.nil? || time.nil?
+      @calendar.add_event(date, time, title, venue)
+    end
   end
 
   # Helpers
