@@ -1,5 +1,5 @@
 require_relative("validations")
-
+require_relative("event")
 require("date")
 
 class Calendar
@@ -41,7 +41,6 @@ class Calendar
   end
 
   def delete_event(month, index)
-    p @events[month].size
     if index > @events[month].size || index < 1
       return nil
     end
@@ -49,6 +48,17 @@ class Calendar
     return true
   end
 
+  def update_event(month,index, *event) #title, venue, date, time
+    title, venue, date, time = event
+    if index > @events[month].size || index < 1
+      return nil
+    end
+    if(add_event(date, time, venue, title))
+      delete_event(month, index)
+      return true
+    end
+    return false
 
+  end
 
 end

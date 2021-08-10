@@ -1,6 +1,8 @@
 require_relative("calendar")
 require_relative("validations")
 require("date")
+require_relative("event")
+
 class Driver 
   include Validations
   def initialize
@@ -19,6 +21,8 @@ class Driver
         self.add_event
       elsif flag == 3
         self.delete_event
+      elsif flag == 4
+        self.update_event
       end
     Validations.press_enter
 
@@ -26,14 +30,7 @@ class Driver
   end
 
   def add_event
-    puts "Please enter the title: "
-    title = gets.chomp
-    puts "Please enter the venue: "
-    venue = gets.chomp
-    puts "Please enter the date(dd/mm/yyyy): "
-    date = Validations.input_date
-    puts "Please enter the time(HH:MM): "
-    time = Validations.input_time
+    title, venue, date, time = Event.input_event
     if @calendar.add_event(date, time, title, venue)
       puts "Successfully added."
     else
@@ -48,25 +45,29 @@ class Driver
   end
 
   def delete_event
-    puts "Please enter the month's full name: (i.e) August"
-    mth = gets.chomp.capitalize
-    month = Date::MONTHNAMES.index(mth)
-    if month.nil?
-      puts "Invalid month name."
-      return
-    end
-    if @calendar.month_view(month) == 0
-      return
-    end
-    puts "Please enter the index of event you want to remove"
-    index= Validations.input_integer
-    if @calendar.delete_event(month,index)
+    month, ind = select_event
+    return if month.nil? || ind.nil?
+    if @calendar.delete_event(month,ind)
       puts "Successfully Deleted"
     else
       puts "The event was not deleted. Please enter valid index"
     end
   end
 
+  def update_event
+    month , ind = select_event
+    return if ind.nil? || month.nil?
+    puts "Press enter if value should not be changed..."
+    title, venue, date, time = Event.input_event
+    if title=="" && date.nil? && time.nil? && venue==""
+      puts "Event not changed"
+      return
+    end
+    @calendar.update_event(month, ind, title, venue, date, time )
+
+
+
+  end
 
   def show_main_menu
     puts "Welcome ! Today is #{Time.new.day}/#{Time.new.month}/#{Time.new.year} "
@@ -78,6 +79,24 @@ class Driver
     puts "6-- Show events of a specific day\n"
     puts "7-- Load From A File\n"
     puts "8-- Exit App\n"
+  end
+
+  #Helpers 
+  private
+  def select_event
+    puts "Please enter the month's full name: (i.e) August"
+    mth = gets.chomp.capitalize
+    month = Date::MONTHNAMES.index(mth)
+    if month.nil?
+      puts "Invalid month name."
+      return
+    end
+    if @calendar.month_view(month) == 0
+      return
+    end
+    puts "Please enter the index of event you want to remove"
+    ind= Validations.input_integer
+    return month, ind
   end
 end 
 
