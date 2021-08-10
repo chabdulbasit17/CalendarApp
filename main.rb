@@ -15,7 +15,7 @@ class Driver
     flag = 0
     while flag != 8
       show_main_menu
-      flag = Validations.input_integer
+      flag = input_integer
       if !flag.between?(1, 8)
         puts 'Invalid Choice !'
       elsif flag == 1
@@ -32,13 +32,13 @@ class Driver
         day_view
 
       end
-      Validations.press_enter
+      press_enter
 
     end
   end
 
   def add_event
-    title, venue, date, time = Event.input_event
+    title, venue, date, time = input_event
     if @calendar.add_event(date, time, title, venue)
       puts 'Successfully added.'
     else
@@ -55,7 +55,7 @@ class Driver
       return
     end
     puts 'Please enter the year: '
-    year = Validations.input_integer
+    year = input_integer
     if year.zero?
       puts 'Invalid year'
       return
@@ -65,7 +65,7 @@ class Driver
 
   def day_view
     puts 'Please enter date'
-    date = Validations.input_date
+    date = input_date
     puts 'Invalid date' && return if date.nil?
     @calendar.day_view(date)
   end
@@ -86,7 +86,7 @@ class Driver
     return if ind.nil? || month.nil?
 
     puts 'Press enter if value should not be changed...'
-    title, venue, date, time = Event.input_event
+    title, venue, date, time = input_event
     if title == '' && date.nil? && time.nil? && venue == ''
       puts 'Event not changed'
       return
@@ -122,11 +122,29 @@ class Driver
       puts 'Invalid month name.'
       return
     end
-    return if @calendar.month_view(month).zero?
+    puts 'Please enter the year: '
+    year = input_integer
+    if year.zero?
+      puts 'Invalid year'
+      return
+    end
+    return if @calendar.month_view(month, year).zero?
 
     puts 'Please enter the index of event you want to remove'
-    ind = Validations.input_integer
+    ind = input_integer
     [month, ind]
+  end
+
+  def input_event
+    puts 'Please enter the title: '
+    title = gets.chomp
+    puts 'Please enter the venue: '
+    venue = gets.chomp
+    puts 'Please enter the date(dd/mm/yyyy): '
+    date = input_date
+    puts 'Please enter the time(HH:MM): '
+    time = input_time
+    [title, venue, date, time]
   end
 end
 

@@ -53,7 +53,7 @@ class Calendar
     return nil if month.nil?
 
     puts 'Enter year: '
-    year = Validations.input_integer
+    year = input_integer
     return nil if year.zero?
 
     date = Date.parse("01/#{month}/#{year}")

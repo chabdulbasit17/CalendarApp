@@ -12,16 +12,4 @@ class Event
     @venue = venue
     @title = title
   end
-
-  def self.input_event
-    puts 'Please enter the title: '
-    title = gets.chomp
-    puts 'Please enter the venue: '
-    venue = gets.chomp
-    puts 'Please enter the date(dd/mm/yyyy): '
-    date = Validations.input_date
-    puts 'Please enter the time(HH:MM): '
-    time = Validations.input_time
-    [title, venue, date, time]
-  end
 end
