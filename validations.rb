@@ -1,39 +1,51 @@
+# frozen_string_literal: true
+
 # require_relative("event")
-require("time")
-require("date")
-require 'io/console'                                                                                                       
+require('time')
+require('date')
+require 'io/console'
 
 module Validations
-
-
-  def Validations.press_enter                                                                                                               
-    print "press enter to continue..."                                                                                                    
-    STDIN.getch                                                                                                              
-    print "            \r" # extra space to overwrite in case next sentence is short                                                                                                              
-  end  
- 
-  def Validations.input_date
-    date = gets
-    retdate = Date.parse(date) rescue nil
-    return retdate
+  def self.press_enter
+    print 'press enter to continue...'
+    $stdin.getch
+    print "            \r" # extra space to overwrite in case next sentence is short
   end
 
-  def Validations.input_time
+  def self.input_date
+    date = gets
+    begin
+      Date.parse(date)
+    rescue StandardError
+      nil
+    end
+  end
+
+  def self.input_time
     time = gets
     rettime = Validations.get_time(time)
     return Time.parse(rettime) unless rettime.nil?
-    return nil
+
+    nil
   end
 
-  def Validations.get_time(str)
-    b = str.each_char.each_cons(5).find { |a| ['0', '1', '2'].include?(a.first) &&
-      (DateTime.strptime(a.join, '%H:%M') rescue nil) }
+  def self.get_time(str)
+    b = str.each_char.each_cons(5).find do |a|
+      %w[0 1 2].include?(a.first) &&
+        begin
+          DateTime.strptime(a.join, '%H:%M')
+        rescue StandardError
+          nil
+        end
+    end
     b ? b.join : b
   end
 
-  def Validations.input_integer
-    num = gets.chomp.to_i rescue nil
+  def self.input_integer
+    num = begin
+      gets.chomp.to_i
+    rescue StandardError
+      nil
+    end
   end
-
 end
-

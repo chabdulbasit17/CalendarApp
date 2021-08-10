@@ -1,26 +1,27 @@
-require_relative("validations")
+# frozen_string_literal: true
+
+require_relative('validations')
 
 class Event
   include Validations
-  attr_accessor :date , :time , :venue , :title 
+  attr_accessor :date, :time, :venue, :title
 
   def initialize(date, time, venue, title)
-    @date = date 
+    @date = date
     @time = time
     @venue = venue
     @title = title
   end
 
   def self.input_event
-    puts "Please enter the title: "
+    puts 'Please enter the title: '
     title = gets.chomp
-    puts "Please enter the venue: "
+    puts 'Please enter the venue: '
     venue = gets.chomp
-    puts "Please enter the date(dd/mm/yyyy): "
+    puts 'Please enter the date(dd/mm/yyyy): '
     date = Validations.input_date
-    puts "Please enter the time(HH:MM): "
+    puts 'Please enter the time(HH:MM): '
     time = Validations.input_time
-    return title, venue, date, time
+    [title, venue, date, time]
   end
-
-end 
+end

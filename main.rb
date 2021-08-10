@@ -1,13 +1,16 @@
-require_relative("calendar")
-require_relative("validations")
-require("date")
-require_relative("event")
+# frozen_string_literal: true
 
-class Driver 
+require_relative('calendar')
+require_relative('validations')
+require('date')
+require_relative('event')
+
+class Driver
   include Validations
   def initialize
     @calendar = Calendar.new
   end
+
   def run
     flag = 0
     while flag != 8
@@ -29,7 +32,7 @@ class Driver
         day_view
 
       end
-    Validations.press_enter
+      Validations.press_enter
 
     end
   end
@@ -48,13 +51,13 @@ class Driver
     mth = gets.chomp.capitalize
     month = Date::MONTHNAMES.index(mth)
     if month.nil?
-      puts "Invalid month name."
+      puts 'Invalid month name.'
       return
     end
-    puts "Please enter the year: "
+    puts 'Please enter the year: '
     year = Validations.input_integer
-    if year == 0
-      puts "Invalid year"
+    if year.zero?
+      puts 'Invalid year'
       return
     end
     @calendar.month_view(month, year)
@@ -70,23 +73,25 @@ class Driver
   def delete_event
     month, ind = select_event
     return if month.nil? || ind.nil?
-    if @calendar.delete_event(month,ind)
-      puts "Successfully Deleted"
+
+    if @calendar.delete_event(month, ind)
+      puts 'Successfully Deleted'
     else
-      puts "The event was not deleted. Please enter valid index"
+      puts 'The event was not deleted. Please enter valid index'
     end
   end
 
   def update_event
-    month , ind = select_event
+    month, ind = select_event
     return if ind.nil? || month.nil?
-    puts "Press enter if value should not be changed..."
+
+    puts 'Press enter if value should not be changed...'
     title, venue, date, time = Event.input_event
-    if title=="" && date.nil? && time.nil? && venue==""
-      puts "Event not changed"
+    if title == '' && date.nil? && time.nil? && venue == ''
+      puts 'Event not changed'
       return
     end
-    @calendar.update_event(month, ind, title, venue, date, time )
+    @calendar.update_event(month, ind, title, venue, date, time)
   end
 
   def grid_view
@@ -105,7 +110,7 @@ class Driver
     puts "8-- Exit App\n"
   end
 
-# Helpers
+  # Helpers
 
   private
 
@@ -114,18 +119,16 @@ class Driver
     mth = gets.chomp.capitalize
     month = Date::MONTHNAMES.index(mth)
     if month.nil?
-      puts "Invalid month name."
+      puts 'Invalid month name.'
       return
     end
-    if @calendar.month_view(month) == 0
-      return
-    end
-    puts "Please enter the index of event you want to remove"
-    ind= Validations.input_integer
-    return month, ind
-  end
-end 
+    return if @calendar.month_view(month).zero?
 
+    puts 'Please enter the index of event you want to remove'
+    ind = Validations.input_integer
+    [month, ind]
+  end
+end
 
 dr = Driver.new
 

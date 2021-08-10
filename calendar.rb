@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative('validations')
 require_relative('event')
 require('date')
@@ -54,7 +56,7 @@ class Calendar
     year = Validations.input_integer
     return nil if year.zero?
 
-    date = Date.parse('01/' + month.to_s + '/' + year.to_s)
+    date = Date.parse("01/#{month}/#{year}")
     puts 'Invalid date' && return if date.nil?
     start_weekday = date.cwday
     event_entries = Hash.new(false)
@@ -75,9 +77,9 @@ class Calendar
 
     if add_event(date, time, venue, title)
       delete_event(month, index)
-      return true
+      true
     else
-      return false
+      false
     end
   end
 end
