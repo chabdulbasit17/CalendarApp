@@ -1,6 +1,7 @@
 require_relative("validations")
 require_relative("event")
 require("date")
+require_relative("view")
 
 class Calendar
   include Validations
@@ -28,16 +29,25 @@ class Calendar
     return true
   end 
 
-  def month_view(month=0)
-    month == 0? curr=Time.new.month : curr = month
+  def month_view(month,year)
+    
+    arr = []
 
-    puts "Events for the month #{Date::MONTHNAMES[curr]}"
-    if @events[curr].empty?
-      puts "No events for this month."
+    if @events[month].empty?
+      puts 'No events for this month.'
       return 0
     end
-    @events[curr].each_with_index {|v,i| puts "-------------------------------\nEvent #{i+1}\n---#{v.title}\n---#{v.venue}\n---#{v.date.strftime("%A, %d %B, %Y")}\n---#{v.time.strftime("%H:%M")}"  }
-    
+    puts "Events for the month #{Date::MONTHNAMES[month]}"
+
+    @events[month].each {|v| arr.push(v) if v.date.year == year }
+    View.show_events(arr)
+  end
+
+  def day_view(date)
+    arr = []
+    month = date.month
+    @events[month].each { |v| arr.push(v) if v.date.year == date.year && v.date.day == date.day }
+    View.show_events(arr)
   end
 
   def delete_event(month, index)

@@ -16,13 +16,17 @@ class Driver
       if(!flag.between?(1,8))
         puts "Invalid Choice ! "
       elsif flag == 1
-        self.month_view
       elsif flag == 2
         self.add_event
       elsif flag == 3
         self.delete_event
       elsif flag == 4
         self.update_event
+      elsif flag == 5
+        self.month_view
+      elsif flag == 6
+        self.day_view
+
       end
     Validations.press_enter
 
@@ -32,16 +36,34 @@ class Driver
   def add_event
     title, venue, date, time = Event.input_event
     if @calendar.add_event(date, time, title, venue)
-      puts "Successfully added."
+      puts 'Successfully added.'
     else
-      puts "Event was not added."
+      puts 'Event was not added.'
     end
   end
 
   def month_view
+    puts "Please enter the month's full name: (i.e) August"
+    mth = gets.chomp.capitalize
+    month = Date::MONTHNAMES.index(mth)
+    if month.nil?
+      puts "Invalid month name."
+      return
+    end
+    puts "Please enter the year: "
+    year = Validations.input_integer
+    if year == 0
+      puts "Invalid year"
+      return
+    end
+    @calendar.month_view(month, year)
+  end
 
-    @calendar.month_view
-
+  def day_view
+    puts 'Please enter date'
+    date = Validations.input_date
+    puts 'Invalid date' && return if date.nil?
+    @calendar.day_view(date)
   end
 
   def delete_event
@@ -81,8 +103,10 @@ class Driver
     puts "8-- Exit App\n"
   end
 
-  #Helpers 
+# Helpers
+
   private
+
   def select_event
     puts "Please enter the month's full name: (i.e) August"
     mth = gets.chomp.capitalize
