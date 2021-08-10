@@ -30,7 +30,8 @@ class Driver
         month_view
       elsif flag == 6
         day_view
-
+      elsif flag == 7
+        load_from_csv
       end
       press_enter
 
@@ -108,6 +109,10 @@ class Driver
     puts "6-- Show events of a specific day\n"
     puts "7-- Load From A File\n"
     puts "8-- Exit App\n"
+  end
+
+  def load_from_csv
+    
   end
 
   # Helpers
