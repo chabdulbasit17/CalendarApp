@@ -50,8 +50,8 @@ class Calendar
     date = Date.parse("01/#{entered_date.month}/#{entered_date.year}")
     puts 'Invalid date' && return if date.nil?
     start_weekday = date.cwday
-    event_entries = Hash.new(false)
-    @events[date.month].each { |v| event_entries[v.date.day] = true if v.date.year == date.year }
+    event_entries = Hash.new(0)
+    @events[date.month].each { |v| event_entries[v.date.day] += 1 if v.date.year == date.year }
     View.grid_view(start_weekday, event_entries)
   end
 

@@ -120,7 +120,7 @@ class Driver
       date = validate_date(date.chomp)
       time = validate_time(time.chomp)
       puts 'Error in data' && break if date.nil? || time.nil?
-      @calendar.add_event(date, time, title, venue)
+      @calendar.add_event(date, time, title, venue, false)
     end
     puts 'Data has been loaded into the calendar from the file'.green
   end

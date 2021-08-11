@@ -17,7 +17,7 @@ class View
 
   def self.grid_view(start_of_month_weekday, event_entries)
     days = %w[M T W T F S S]
-    days.each { |d| print format('%-8.3s', "#{d} ") }
+    days.each { |d| print format('%-9.3s', "#{d} ") }
     puts
     i = 0
     day_of_month = start_of_month_weekday
@@ -26,11 +26,11 @@ class View
     while i < 30 + start_of_month_weekday
       puts if (counter % 7).zero?
       if i < day_of_month - 1
-        print format('%-8.3s', ' ')
+        print ' '.ljust(9)
         counter += 1
       else
-        print  "#{day}\t".red if event_entries[day]
-        print  "#{day}\t".green unless event_entries[day]
+        print  "#{day}(#{event_entries[day]})".ljust(9).red if event_entries[day].positive?
+        print  day.to_s.ljust(9).green if event_entries[day].zero?
         counter += 1
         day += 1
       end
