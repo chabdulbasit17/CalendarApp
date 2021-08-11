@@ -7,6 +7,7 @@ require('date')
 require('colorize')
 require_relative('event')
 
+# class Driver- main class
 class Driver
   include Validations
   def initialize
@@ -36,6 +37,7 @@ class Driver
         load_from_csv
       end
       press_enter
+      system('clear') || system('cls')
 
     end
   end
