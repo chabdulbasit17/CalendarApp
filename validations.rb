@@ -6,12 +6,7 @@ require('date')
 require 'io/console'
 # Validations for validations and helper methods
 module Validations
-  def press_enter
-    print 'press enter to continue...'
-    $stdin.getch
-    print "            \r" # extra space to overwrite in case next sentence is short
-    puts
-  end
+  
 
   def validate_date(date)
     return nil if (date =~ %r(^\d{2}/\d{2}/\d{4})).nil? && (date =~ %r(^\d{2}/\d{4})).nil?

@@ -38,7 +38,6 @@ class Driver
       end
       press_enter
       system('clear') || system('cls')
-
     end
   end
 
@@ -178,6 +177,13 @@ class Driver
       puts 'Please enter a valid value: '.red if str.empty?
     end
     str
+  end
+
+  def press_enter
+    print 'press enter to continue...'
+    $stdin.getch
+    print "            \r" # extra space to overwrite in case next sentence is short
+    puts
   end
 end
 
