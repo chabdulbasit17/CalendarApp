@@ -20,10 +20,10 @@ describe Validations do
   end
 
   it 'returns nil if wrong format of date is given' do
-    expect(dummy_class.validate_date("2/8/21")).to eq nil
+    expect(dummy_class.validate_date('2/8/21')).to eq nil
   end
 
   it 'returns nil if wrong format of time is given' do
-    expect(dummy_class.validate_time("2:2")).to eq nil
+    expect(dummy_class.validate_time('2:2')).to eq nil
   end
 end
