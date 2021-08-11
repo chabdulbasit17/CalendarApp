@@ -85,6 +85,7 @@ class Driver
       puts 'Event successfully updated'
     else
       puts 'Error: Please enter correct index'
+    end
   end
 
   def grid_view
@@ -178,6 +179,4 @@ class Driver
   end
 end
 
-dr = Driver.new
-
-dr.run
+Driver.new.run

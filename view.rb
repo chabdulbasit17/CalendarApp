@@ -26,7 +26,7 @@ class View
     while i < 30 + start_of_month_weekday
       puts if (counter % 7).zero?
       if i < day_of_month - 1
-        print format('%-8.3s', '*')
+        print format('%-8.3s', ' ')
         counter += 1
       else
         print  "#{day}\t".red if event_entries[day]
