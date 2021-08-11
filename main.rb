@@ -4,6 +4,7 @@ require_relative('calendar')
 require_relative('validations')
 require_relative('csv')
 require('date')
+require('colorize')
 require_relative('event')
 
 class Driver
@@ -18,7 +19,7 @@ class Driver
       show_main_menu
       flag = validate_integer gets.chomp
       if !flag.between?(1, 8)
-        puts 'Invalid Choice !'
+        puts 'Invalid Choice !'.red
       elsif flag == 1
         grid_view
       elsif flag == 2
@@ -42,9 +43,9 @@ class Driver
   def add_event
     title, venue, date, time = input_event
     if @calendar.add_event(date, time, title, venue)
-      puts 'Successfully added.'
+      puts 'Successfully added.'.green
     else
-      puts 'Event was not added.'
+      puts 'Event was not added.'.red
     end
   end
 
@@ -65,9 +66,9 @@ class Driver
     return if month.nil? || ind.nil?
 
     if @calendar.delete_event(month, ind)
-      puts 'Successfully Deleted'
+      puts 'Successfully Deleted'.green
     else
-      puts 'The event was not deleted. Please enter valid index'
+      puts 'The event was not deleted. Please enter valid index'.red
     end
   end
 
@@ -75,16 +76,15 @@ class Driver
     month, ind = select_event
     return if ind.nil? || month.nil?
 
-    puts 'Press enter if value should not be changed...'
     title, venue, date, time = input_event
     if title == '' && date.nil? && time.nil? && venue == ''
-      puts 'Event not changed'
+      puts 'Event not changed'.red
       return
     end
     if @calendar.update_event(month, ind, title, venue, date, time)
-      puts 'Event successfully updated'
+      puts 'Event successfully updated'.green
     else
-      puts 'Error: Please enter correct index'
+      puts 'Error: Please enter correct index'.red
     end
   end
 
@@ -112,7 +112,7 @@ class Driver
     data = Csv.new.load_data(filename)
     # date, time, title, venue
     if data.nil?
-      puts 'The file mentioned doesnt exist'
+      puts 'The file mentioned doesnt exist'.red
       return
     end
     data.each do |eve|
@@ -122,7 +122,7 @@ class Driver
       puts 'Error in data' && break if date.nil? || time.nil?
       @calendar.add_event(date, time, title, venue)
     end
-    puts 'Data has been loaded into the calendar from the file'
+    puts 'Data has been loaded into the calendar from the file'.green
   end
 
   # Helpers
@@ -155,7 +155,7 @@ class Driver
     date = nil
     while date.nil?
       date = validate_date gets.chomp
-      puts 'Invalid Date. Please Try Again: ' if date.nil?
+      puts 'Invalid Date. Please Try Again: '.red if date.nil?
     end
     date
   end
@@ -164,7 +164,7 @@ class Driver
     time = nil
     while time.nil?
       time = validate_time gets.chomp
-      puts 'Invalid Time. Please Try Again: ' if time.nil?
+      puts 'Invalid Time. Please Try Again: '.red if time.nil?
     end
     time
   end
@@ -173,7 +173,7 @@ class Driver
     str = ''
     while str.empty?
       str = gets.chomp
-      puts 'Please enter a valid value: ' if str.empty?
+      puts 'Please enter a valid value: '.red if str.empty?
     end
     str
   end
