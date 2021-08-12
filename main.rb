@@ -77,7 +77,7 @@ class Driver
     month, event_index = select_event
     return if event_index.nil? || month.nil?
 
-    if @calendar.validate_index(month, event_index).nil?
+    if @calendar.validate_event_index(month, event_index).nil?
       puts 'Invalid Index'.red
       return
     end

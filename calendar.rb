@@ -56,7 +56,7 @@ class Calendar
   end
 
   def delete_event(month, index)
-    return nil if validate_index(month, index).nil?
+    return nil if validate_event_index(month, index).nil?
 
     return true unless @events[month].delete_at(index - 1).nil?
   end
@@ -73,7 +73,7 @@ class Calendar
     end
   end
 
-  def validate_index(month, index)
+  def validate_event_index(month, index)
     return 0 unless index > @events[month].size || index < 1
   end
 end
