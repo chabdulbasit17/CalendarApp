@@ -38,7 +38,7 @@ class Calendar
   def day_view(date)
     arr = []
     if @events[date.month].empty?
-      puts 'No events for this month.'
+      puts 'No events for this day.'
       return nil
     end
     month = date.month
