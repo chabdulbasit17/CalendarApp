@@ -52,13 +52,13 @@ class Driver
 
   def month_view
     puts 'Please enter date (MM/YYYY)'
-    date = input_date
+    date = input_date_time('date')
     @calendar.month_view(date)
   end
 
   def day_view
     puts 'Please enter date (DD/MM/YYYY)'
-    date = input_date
+    date = input_date_time('date')
     @calendar.day_view(date)
   end
 
@@ -95,7 +95,7 @@ class Driver
 
   def grid_view
     puts 'Please enter the date (MM/YYYY): '
-    date = input_date
+    date = input_date_time('date')
     @calendar.grid_view(date)
   end
 
@@ -136,7 +136,7 @@ class Driver
 
   def select_event
     print 'Please enter date: (MM/YYYY)'
-    date = input_date
+    date = input_date_time('date')
     return if @calendar.month_view(date).nil?
 
     puts 'Please enter the index of event you want to remove'
@@ -150,28 +150,19 @@ class Driver
     puts 'Please enter the venue: '
     venue = input_string
     puts 'Please enter the date(dd/mm/yyyy): '
-    date = input_date
+    date = input_date_time('date')
     puts 'Please enter the time(HH:MM): '
-    time = input_time
+    time = input_date_time('time')
     [title, venue, date, time]
   end
 
-  def input_date
-    date = nil
-    while date.nil?
-      date = validate_date gets.chomp
-      puts 'Invalid Date. Please Try Again: '.red if date.nil?
+  def input_date_time(obj)
+    ret_value = nil
+    while ret_value.nil?
+      ret_value = public_send("validate_#{obj}", gets.chomp)
+      puts "Invalid #{obj}. Please try again".red if ret_value.nil?
     end
-    date
-  end
-
-  def input_time
-    time = nil
-    while time.nil?
-      time = validate_time gets.chomp
-      puts 'Invalid Time. Please Try Again: '.red if time.nil?
-    end
-    time
+    ret_value
   end
 
   def input_string
