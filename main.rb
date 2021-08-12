@@ -53,7 +53,7 @@ class Driver
   def month_view
     puts 'Please enter date (MM/YYYY)'
     date = input_date
-    @calendar.month_view(date.month, date.year)
+    @calendar.month_view(date)
   end
 
   def day_view
@@ -63,10 +63,10 @@ class Driver
   end
 
   def delete_event
-    month, ind = select_event
-    return if month.nil? || ind.nil?
+    month, event_index = select_event
+    return if month.nil? || event_index.nil?
 
-    if @calendar.delete_event(month, ind)
+    if @calendar.delete_event(month, event_index)
       puts 'Successfully Deleted'.green
     else
       puts 'The event was not deleted. Please enter valid index'.red
@@ -74,15 +74,19 @@ class Driver
   end
 
   def update_event
-    month, ind = select_event
-    return if ind.nil? || month.nil?
+    month, event_index = select_event
+    return if event_index.nil? || month.nil?
 
+    if @calendar.validate_index(month, event_index).nil?
+      puts 'Invalid Index'.red
+      return
+    end
     title, venue, date, time = input_event
     if title == '' && date.nil? && time.nil? && venue == ''
       puts 'Event not changed'.red
       return
     end
-    if @calendar.update_event(month, ind, title, venue, date, time)
+    if @calendar.update_event(month, event_index, title, venue, date, time)
       puts 'Event successfully updated'.green
     else
       puts 'Error: Please enter correct index'.red
@@ -133,11 +137,11 @@ class Driver
   def select_event
     print 'Please enter date: (MM/YYYY)'
     date = input_date
-    return if @calendar.month_view(date.month, date.year).nil?
+    return if @calendar.month_view(date).nil?
 
     puts 'Please enter the index of event you want to remove'
-    ind = validate_integer gets.chomp
-    [date.month, ind]
+    event_index = validate_integer gets.chomp
+    [date.month, event_index]
   end
 
   def input_event

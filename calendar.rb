@@ -13,10 +13,6 @@ class Calendar
   end
 
   def add_event(date, time, venue, title, past_flag = true)
-    puts 'Error in date' && return if date.nil?
-
-    puts 'Error in time' && return if time.nil?
-
     if date.year < Time.new.year && past_flag
       puts 'Cannot add event in the past'
       return
@@ -26,21 +22,25 @@ class Calendar
     return true unless @events[date.month].push(event_to_add).nil?
   end
 
-  def month_view(month, year)
+  def month_view(date)
     arr = []
 
-    if @events[month].empty?
+    if @events[date.month].empty?
       puts 'No events for this month.'
       return nil
     end
-    puts "Events for the month #{Date::MONTHNAMES[month]}"
+    puts "Events for the month #{Date::MONTHNAMES[date.month]}"
 
-    @events[month].each { |v| arr.push(v) if v.date.year == year }
+    @events[date.month].each { |v| arr.push(v) if v.date.year == date.year }
     View.show_events(arr)
   end
 
   def day_view(date)
     arr = []
+    if @events[date.month].empty?
+      puts 'No events for this month.'
+      return nil
+    end
     month = date.month
     @events[month].each { |v| arr.push(v) if v.date.year == date.year && v.date.day == date.day }
     View.show_events(arr)
@@ -56,7 +56,7 @@ class Calendar
   end
 
   def delete_event(month, index)
-    return nil if index > @events[month].size || index < 1
+    return nil if validate_index(month, index).nil?
 
     return true unless @events[month].delete_at(index - 1).nil?
   end
@@ -71,5 +71,9 @@ class Calendar
     else
       false
     end
+  end
+
+  def validate_index(month, index)
+    return 0 unless index > @events[month].size || index < 1
   end
 end
