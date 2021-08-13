@@ -15,34 +15,33 @@ class Driver
   end
 
   def run
-    flag = 0
-    while flag != 8
+    option_selected_by_user = 0
+    while option_selected_by_user != 8
       show_main_menu
-      flag = validate_integer gets.chomp
-      if !flag.between?(1, 8)
+      option_selected_by_user = validate_integer(gets.chomp)
+      if !option_selected_by_user.between?(1, 8)
         puts 'Invalid Choice !'.red
-      elsif flag == 1
-        grid_view
-      elsif flag == 2
+      elsif option_selected_by_user == 1
+        show_calendar_view_of_month
+      elsif option_selected_by_user == 2
         add_event
-      elsif flag == 3
+      elsif option_selected_by_user == 3
         delete_event
-      elsif flag == 4
+      elsif option_selected_by_user == 4
         update_event
-      elsif flag == 5
-        month_view
-      elsif flag == 6
-        day_view
-      elsif flag == 7
-        load_from_csv
+      elsif option_selected_by_user == 5
+        show_events_of_a_month
+      elsif option_selected_by_user == 6
+        show_events_of_a_day
+      elsif option_selected_by_user == 7
+        load_events_from_csv_file
       end
-      press_enter
-      system('clear') || system('cls')
+      press_enter_to_continue
     end
   end
 
   def add_event
-    title, venue, date, time = input_event
+    title, venue, date, time = get_event_input
     if @calendar.add_event(date, time, title, venue)
       puts 'Successfully added.'.green
     else
@@ -50,20 +49,20 @@ class Driver
     end
   end
 
-  def month_view
+  def show_events_of_a_month
     puts 'Please enter date (MM/YYYY)'
-    date = input_date_time('date')
+    date = get_date_time_input(:date)
     @calendar.month_view(date)
   end
 
-  def day_view
+  def show_events_of_a_day
     puts 'Please enter date (DD/MM/YYYY)'
-    date = input_date_time('date')
+    date = get_date_time_input(:date)
     @calendar.day_view(date)
   end
 
   def delete_event
-    month, event_index = select_event
+    month, event_index = show_events_and_get_index
     return if month.nil? || event_index.nil?
 
     if @calendar.delete_event(month, event_index)
@@ -74,14 +73,13 @@ class Driver
   end
 
   def update_event
-    month, event_index = select_event
-    return if event_index.nil? || month.nil?
+    month, event_index = show_events_and_get_index
 
-    if @calendar.validate_event_index(month, event_index).nil?
+    if !@calendar.valid_event_index?(month, event_index)
       puts 'Invalid Index'.red
       return
     end
-    title, venue, date, time = input_event
+    title, venue, date, time = get_event_input
     if title == '' && date.nil? && time.nil? && venue == ''
       puts 'Event not changed'.red
       return
@@ -93,9 +91,9 @@ class Driver
     end
   end
 
-  def grid_view
+  def show_calendar_view_of_month
     puts 'Please enter the date (MM/YYYY): '
-    date = input_date_time('date')
+    date = get_date_time_input(:date)
     @calendar.grid_view(date)
   end
 
@@ -111,9 +109,9 @@ class Driver
     puts "8-- Exit App\n"
   end
 
-  def load_from_csv
+  def load_events_from_csv_file
     puts 'Please enter filename: (filename.csv) '
-    filename = input_string
+    filename = get_string_input
     data = Csv.new.load_data(filename)
     # date, time, title, venue
     if data.nil?
@@ -134,38 +132,39 @@ class Driver
 
   private
 
-  def select_event
+  def show_events_and_get_index
     print 'Please enter date: (MM/YYYY)'
-    date = input_date_time('date')
+    date = get_date_time_input('date')
     return if @calendar.month_view(date).nil?
 
     puts 'Please enter the index of event you want to remove'
-    event_index = validate_integer gets.chomp
+    event_index = validate_integer(gets.chomp)
     [date.month, event_index]
   end
 
-  def input_event
+  def get_event_input
     puts 'Please enter the title: '
-    title = input_string
+    title = get_string_input
     puts 'Please enter the venue: '
-    venue = input_string
+    venue = get_string_input
     puts 'Please enter the date(dd/mm/yyyy): '
-    date = input_date_time('date')
+    date = get_date_time_input(:date)
     puts 'Please enter the time(HH:MM): '
-    time = input_date_time('time')
+    time = get_date_time_input(:time)
     [title, venue, date, time]
   end
 
-  def input_date_time(obj)
-    ret_value = nil
-    while ret_value.nil?
-      ret_value = public_send("validate_#{obj}", gets.chomp)
-      puts "Invalid #{obj}. Please try again".red if ret_value.nil?
+  def get_date_time_input(object_type)
+    date_time_to_return = nil
+    while date_time_to_return.nil?
+      date_time_to_return = public_send("validate_#{object_type}", gets.chomp)
+      # Public send calls either validate_date or validate_time based on the @param object_type
+      puts "Invalid #{object_type}. Please try again".red if date_time_to_return.nil?
     end
-    ret_value
+    date_time_to_return
   end
 
-  def input_string
+  def get_string_input
     str = ''
     while str.empty?
       str = gets.chomp
@@ -174,11 +173,12 @@ class Driver
     str
   end
 
-  def press_enter
+  def press_enter_to_continue
     print 'press enter to continue...'
     $stdin.getch
     print "            \r" # extra space to overwrite in case next sentence is short
     puts
+    system('clear')
   end
 end
 

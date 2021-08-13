@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative('validations')
-
 class Event
   include Validations
   attr_accessor :date, :time, :venue, :title
