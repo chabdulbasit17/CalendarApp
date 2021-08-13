@@ -74,16 +74,11 @@ class Driver
 
   def update_event
     month, event_index = show_events_and_get_index
-
     if !@calendar.valid_event_index?(month, event_index)
       puts 'Invalid Index'.red
       return
     end
     title, venue, date, time = get_event_input
-    if title == '' && date.nil? && time.nil? && venue == ''
-      puts 'Event not changed'.red
-      return
-    end
     if @calendar.update_event(month, event_index, title, venue, date, time)
       puts 'Event successfully updated'.green
     else
